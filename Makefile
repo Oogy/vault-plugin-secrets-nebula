@@ -15,16 +15,16 @@ endif
 all: fmt build start
 
 build:
-	GOOS=$(OS) GOARCH="$(GOARCH)" go build -o vault/plugins/vault-plugin-secrets-mock cmd/vault-plugin-secrets-mock/main.go
+	GOOS=$(OS) GOARCH="$(GOARCH)" go build -o vault/plugins/vault-plugin-secrets-nebula cmd/vault-plugin-secrets-nebula/main.go
 
 start:
 	vault server -dev -dev-root-token-id=root -dev-plugin-dir=./vault/plugins
 
 enable:
-	vault secrets enable -path=mock-secrets vault-plugin-secrets-mock
+	vault secrets enable -path=nebula vault-plugin-secrets-nebula
 
 clean:
-	rm -f ./vault/plugins/vault-plugin-secrets-mock
+	rm -f ./vault/plugins/vault-plugin-secrets-nebula
 
 fmt:
 	go fmt $$(go list ./...)
