@@ -170,8 +170,6 @@ func (b *backend) pathConfigCAUpdate(ctx context.Context, req *logical.Request, 
 		},
 	}
 
-	//jc, err := nc.MarshalJSON() // I don't think this is needed.
-
 	entry, err := logical.StorageEntryJSON("config/ca_cert", nc)
 	if err != nil {
 		return nil, err
@@ -202,7 +200,7 @@ func (b *backend) pathConfigCARead(ctx context.Context, req *logical.Request, da
 	}
 
 	var nc cert.NebulaCertificate
-	if err := nebulaCACertEntry.DecodeJSON(&nc); err != nil { // I don't like this, but not good enough at go to know if its actually bad. FTR, I got this from the official SSH backend
+	if err := nebulaCACertEntry.DecodeJSON(&nc); err != nil {
 		return nil, errutil.InternalError{Err: fmt.Sprintf("unable to decode Nebula Certificate: %v", err)}
 	}
 
@@ -210,17 +208,11 @@ func (b *backend) pathConfigCARead(ctx context.Context, req *logical.Request, da
 
 	resp := &logical.Response{
 		Data: map[string]interface{}{
-			"name":       certDetails.Name, // once I figure out how to go from JSON -> Cert, need to build a CertEntry type to properly structure the data in response
+			"name":       certDetails.Name,
 			"public_key": certDetails.PublicKey,
 		},
 	}
-	/*
-		resp := &logical.Response{
-			Data: map[string]interface{}{
-				"name": nebulaCACert.Details.Name,
-			},
-		}
-	*/
+
 	return resp, nil
 }
 
